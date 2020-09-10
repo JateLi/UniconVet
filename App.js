@@ -3,20 +3,29 @@ import {
   StyleSheet,
   SafeAreaView,
   StatusBar,
-  View,
-  Text
+  View
 } from 'react-native';
 
+//Redux import
+import { Provider } from 'react-redux';
+import { createStore, applyMiddleware } from 'redux';
+import thunk from "redux-thunk";
+import uvReducer from './reducer/uvReducer';
+
 import PageNavigator from './components/pageNavigator'
+
+const store = createStore(uvReducer, applyMiddleware(thunk));
 
 export default class App extends React.Component {
   render() {
     return (
-      <View style={styles.container}>
-        <SafeAreaView style={styles.statusBar} />
-        <StatusBar barStyle="light-content" />
-        <PageNavigator />
-      </View>
+      <Provider store={store}>
+        <View style={styles.container}>
+          <SafeAreaView style={styles.statusBar} />
+          <StatusBar barStyle="light-content" />
+          <PageNavigator />
+        </View>
+      </Provider>
     );
   }
 }
