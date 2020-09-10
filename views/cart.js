@@ -1,17 +1,80 @@
 import React from 'react';
 import {
     StyleSheet,
-    SafeAreaView,
-    StatusBar,
     View,
     Text,
-    Dimensions
+    Dimensions,
+    TouchableOpacity,
+    FlatList,
+    PixelRatio
 } from 'react-native';
 
 const { width, height } = Dimensions.get('window');
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
-export default class Cart extends React.Component {
+import { updateProductionList } from '../actions/uvActions'
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
+import ProductionRow from '../components/productionRow'
+
+class Cart extends React.Component {
+    componentDidMount() {
+        this.props.updateProductionList()
+    }
+
+    onPressProduction = (id) => {
+        //TODO add produciton to cart 
+        console.log(id)
+    }
+
+    navToCart = () => {
+        this.props.navigation.navigate('Cart')
+    }
+
+    returnTopBarButton = (buttonText, side) => {
+        if (buttonText == '') return <View />
+
+        const topBarButton = <TouchableOpacity
+            onPress={() => this.navToCart()}>
+            <View style={styles.topBarButton}>
+                <Text>{buttonText}</Text>
+            </View>
+        </TouchableOpacity>
+
+        return topBarButton
+    }
+
+    returnProductionList = () => {
+        const productionList = this.props.uvRedux.get('productionList')
+        var performList = []
+
+        if (productionList != []) {
+            for (let i = 0; i < productionList.size; i++) {
+                const id = productionList.getIn([i, "id"])
+                const title = productionList.getIn([i, "name"])
+                const price = productionList.getIn([i, 'price'])
+
+                performList.push({ title: title, price: price, key: String(id) })
+            }
+        }
+        return performList
+    }
+
+    /**
+     * Create FlatList with Production List Sample Data. 
+     */
+    returnFlatList = () => {
+        const list = this.returnProductionList()
+        const flatList = <FlatList
+            style={styles.flatListHolder}
+            data={list}
+            renderItem={({ item }) =>
+                <ProductionRow item={item} onPress={this.onPressProduction} />
+            } />
+        return flatList
+    }
+
     render() {
         return (
             <View style={styles.container}>
@@ -21,10 +84,10 @@ export default class Cart extends React.Component {
                             <Text>{'Production'}</Text>
                         </View>
                     </View>
-                    <Text>Cart</Text>
-                    <Text>Cart</Text>
+                    {this.returnTopBarButton('Back', 'left')}
+                    {this.returnTopBarButton('Cart', 'right')}
                 </View>
-                <Text>Testestest</Text>
+                {this.returnFlatList()}
             </View>
         );
     }
@@ -60,4 +123,26 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center'
     },
+    topBarButton: {
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    flatListHolder: {
+        borderTopColor: 'white',
+        borderTopWidth: 10 / PixelRatio.get(),
+        width: width
+    }
 });
+
+const mapStateToProps = (state) => {
+    const { uvRedux } = state
+    return { uvRedux }
+};
+
+const mapDispatchToProps = dispatch => (
+    bindActionCreators({
+        updateProductionList
+    }, dispatch)
+);
+
+export default connect(mapStateToProps, mapDispatchToProps)(Cart);
