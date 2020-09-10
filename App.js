@@ -7,15 +7,15 @@ import {
   Text
 } from 'react-native';
 
+import PageNavigator from './components/pageNavigator'
+
 export default class App extends React.Component {
   render() {
     return (
-      <View>
+      <View style={styles.container}>
         <SafeAreaView style={styles.statusBar} />
-        <View style={styles.container}>
-          <StatusBar barStyle="light-content" />
-          <Text>Testetest</Text>
-        </View>
+        <StatusBar barStyle="light-content" />
+        <PageNavigator />
       </View>
     );
   }
