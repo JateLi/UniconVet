@@ -4,7 +4,9 @@ import {
     View,
     Text,
     Dimensions,
-    TouchableOpacity
+    TouchableOpacity,
+    FlatList,
+    PixelRatio
 } from 'react-native';
 
 const { width, height } = Dimensions.get('window');
@@ -14,9 +16,16 @@ import { updateProductionList } from '../actions/uvActions'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
+import ProductionRow from '../components/productionRow'
+
 class Productions extends React.Component {
     componentDidMount() {
         this.props.updateProductionList()
+    }
+
+    onPressProduction = (id) => {
+        //TODO add produciton to cart 
+        console.log(id)
     }
 
     navToCart = () => {
@@ -36,6 +45,36 @@ class Productions extends React.Component {
         return topBarButton
     }
 
+    returnProductionList = () => {
+        const productionList = this.props.uvRedux.get('productionList')
+        var performList = []
+
+        if (productionList != []) {
+            for (let i = 0; i < productionList.size; i++) {
+                const id = productionList.getIn([i, "id"])
+                const title = productionList.getIn([i, "name"])
+                const price = productionList.getIn([i, 'price'])
+
+                performList.push({ title: title, price: price, key: String(id) })
+            }
+        }
+        return performList
+    }
+
+    /**
+     * Create FlatList with Production List Sample Data. 
+     */
+    returnFlatList = () => {
+        const list = this.returnProductionList()
+        const flatList = <FlatList
+            style={styles.flatListHolder}
+            data={list}
+            renderItem={({ item }) =>
+                <ProductionRow item={item} onPress={this.onPressProduction} />
+            } />
+        return flatList
+    }
+
     render() {
         return (
             <View style={styles.container}>
@@ -48,7 +87,7 @@ class Productions extends React.Component {
                     {this.returnTopBarButton('', 'left')}
                     {this.returnTopBarButton('Cart', 'right')}
                 </View>
-                <Text>Testestest</Text>
+                {this.returnFlatList()}
             </View>
         );
     }
@@ -87,6 +126,11 @@ const styles = StyleSheet.create({
     topBarButton: {
         alignItems: 'center',
         justifyContent: 'center'
+    },
+    flatListHolder: {
+        borderTopColor: 'white',
+        borderTopWidth: 10 / PixelRatio.get(),
+        width: width
     }
 });
 
