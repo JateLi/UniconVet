@@ -37,7 +37,7 @@ const uvReducer = (state = INITIAL_STATE, action) => {
         case 'DELETE_ITME_BY_ID':
             const deleteId = parseInt(action.id)
             var filterList = state.get('cartgoryList').filter(item => item.get('id') !== deleteId)
-            return state.setIn('cartgoryList', Immutable.fromJS(filterList));
+            return state.set('cartgoryList', Immutable.fromJS(filterList));
 
         case 'UPDATE_SELECT_ITEM':
             return state
