@@ -1,30 +1,119 @@
 import React from 'react';
 import {
     StyleSheet,
-    SafeAreaView,
-    StatusBar,
     View,
     Text,
-    Dimensions
+    Dimensions,
+    TouchableOpacity,
+    FlatList,
+    PixelRatio
 } from 'react-native';
 
 const { width, height } = Dimensions.get('window');
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
-export default class Cart extends React.Component {
+import { updateProductionList, removeFromCart } from '../actions/uvActions'
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
+import CartRow from '../components/cartRow'
+
+class Cart extends React.Component {
+    componentDidMount() {
+        this.props.updateProductionList()
+    }
+
+    /**
+     * Remove the item from cart. 
+     * @param {*} id 
+     */
+    onPressProduction = (id) => {
+        this.props.removeFromCart(id)
+    }
+
+    navToCart = (side) => {
+        if (side == 'left') {
+            this.props.navigation.goBack()
+            return
+        }
+        this.props.navigation.navigate('Cart')
+    }
+
+    returnTopBarButton = (buttonText, side) => {
+        if (buttonText == '') return <View />
+
+        const topBarButton = <TouchableOpacity
+            onPress={() => this.navToCart(side)}>
+            <View style={styles.topBarButton}>
+                <Text>{buttonText}</Text>
+            </View>
+        </TouchableOpacity>
+
+        return topBarButton
+    }
+
+    returnProductionList = () => {
+        const productionList = this.props.uvRedux.get('cartgoryList')
+        var performList = []
+
+        if (productionList != []) {
+            for (let i = 0; i < productionList.size; i++) {
+                const id = productionList.getIn([i, "id"])
+                const title = productionList.getIn([i, "name"])
+                const price = productionList.getIn([i, 'price'])
+                const quantity = productionList.getIn([i, "quantity"])
+
+                performList.push({ title: title, quantity: quantity, price: price, key: String(id) })
+            }
+        }
+        return performList
+    }
+
+
+    returnTotalPrice = () => {
+        const productionList = this.props.uvRedux.get('cartgoryList')
+        let num = 0
+        for (let i = 0; i < productionList.size; i++) {
+            const price = productionList.getIn([i, 'price'])
+
+            num = num + price
+        }
+
+        num = num.toFixed(2);
+
+        return num
+    }
+
+    /**
+     * Create FlatList with Production List Sample Data. 
+     */
+    returnFlatList = () => {
+        const list = this.returnProductionList()
+        const total = this.returnTotalPrice()
+
+        const flatList = <FlatList
+            style={styles.flatListHolder}
+            data={list}
+            ListHeaderComponent={<View><Text style={{ fontSize: 20 }}>{"Total: " + total}</Text></View>}
+            renderItem={({ item }) =>
+                <CartRow item={item} onPress={this.onPressProduction} />
+            } />
+        return flatList
+    }
+
     render() {
         return (
             <View style={styles.container}>
                 <View style={styles.topBarHolder}>
                     <View style={styles.titleHolder}>
                         <View style={{ width: wp('90%'), alignItems: 'center' }}>
-                            <Text>{'Production'}</Text>
+                            <Text>{'Cart'}</Text>
                         </View>
                     </View>
-                    <Text>Cart</Text>
-                    <Text>Cart</Text>
+                    {this.returnTopBarButton('Back', 'left')}
+                    {this.returnTopBarButton("", 'right')}
                 </View>
-                <Text>Testestest</Text>
+                {this.returnFlatList()}
             </View>
         );
     }
@@ -60,4 +149,27 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center'
     },
+    topBarButton: {
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    flatListHolder: {
+        borderTopColor: 'white',
+        borderTopWidth: 10 / PixelRatio.get(),
+        width: width
+    }
 });
+
+const mapStateToProps = (state) => {
+    const { uvRedux } = state
+    return { uvRedux }
+};
+
+const mapDispatchToProps = dispatch => (
+    bindActionCreators({
+        updateProductionList,
+        removeFromCart
+    }, dispatch)
+);
+
+export default connect(mapStateToProps, mapDispatchToProps)(Cart);

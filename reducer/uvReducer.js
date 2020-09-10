@@ -10,16 +10,40 @@ const INITIAL_STATE =
             //     price: 125.76
             //   },
             productionList: [],
+
+            // {
+            //     id: 1,
+            //     name: 'Sledgehammer',
+            //     quantity: 1, 
+            //     price: 125.76
+            //   },
             cartgoryList: []
 
         });
 
 const uvReducer = (state = INITIAL_STATE, action) => {
     switch (action.type) {
-        //TODO update production list.
-        //TODO update cart list.
-        //TODO Update item in cart by id. 
-        //TODO Remove item in cart by id.
+        case 'UPDATE_PRODUCTIONS':
+            const productions = action.payload
+            console.log(productions)
+            return state.set('productionList', Immutable.fromJS(productions));
+
+        case 'ADD_NEW_ITEM':
+            const newItem = action.newItem
+            console.log(newItem)
+            return state.update('cartgoryList', cartgoryList => cartgoryList.push(Immutable.fromJS(newItem)));
+
+        case 'DELETE_ITME_BY_ID':
+            const deleteId = parseInt(action.id)
+            var filterList = state.get('cartgoryList').filter(item => item.get('id') !== deleteId)
+            return state.set('cartgoryList', Immutable.fromJS(filterList));
+
+        case 'UPDATE_SELECT_ITEM':
+            const updateItem = action.updateItem
+            const updateId = action.updateId
+            const index = state.get('cartgoryList').findIndex(obj => obj.get('id') === updateId)
+            state = state.setIn(['cartgoryList', index], Immutable.fromJS(updateItem))
+            return state
         default:
             return state
     }
