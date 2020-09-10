@@ -17,7 +17,7 @@ const INITIAL_STATE =
             //     quantity: 1, 
             //     price: 125.76
             //   },
-            cartgoryList: []
+            cartList: []
 
         });
 
@@ -31,18 +31,18 @@ const uvReducer = (state = INITIAL_STATE, action) => {
         case 'ADD_NEW_ITEM':
             const newItem = action.newItem
             console.log(newItem)
-            return state.update('cartgoryList', cartgoryList => cartgoryList.push(Immutable.fromJS(newItem)));
+            return state.update('cartList', cartList => cartList.push(Immutable.fromJS(newItem)));
 
         case 'DELETE_ITME_BY_ID':
             const deleteId = parseInt(action.id)
-            var filterList = state.get('cartgoryList').filter(item => item.get('id') !== deleteId)
-            return state.set('cartgoryList', Immutable.fromJS(filterList));
+            var filterList = state.get('cartList').filter(item => item.get('id') !== deleteId)
+            return state.set('cartList', Immutable.fromJS(filterList));
 
         case 'UPDATE_SELECT_ITEM':
             const updateItem = action.updateItem
             const updateId = action.updateId
-            const index = state.get('cartgoryList').findIndex(obj => obj.get('id') === updateId)
-            state = state.setIn(['cartgoryList', index], Immutable.fromJS(updateItem))
+            const index = state.get('cartList').findIndex(obj => obj.get('id') === updateId)
+            state = state.setIn(['cartList', index], Immutable.fromJS(updateItem))
             return state
         default:
             return state

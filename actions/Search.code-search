@@ -1,0 +1,39 @@
+# Query: cartgoryList
+# Flags: RegExp
+# ContextLines: 1
+
+12 results - 3 files
+
+reducer/uvReducer.js:
+  19              //   },
+  20:             cartList: []
+  21  
+
+  33              console.log(newItem)
+  34:             return state.update('cartList', cartList => cartList.push(Immutable.fromJS(newItem)));
+  35  
+
+  37              const deleteId = parseInt(action.id)
+  38:             var filterList = state.get('cartList').filter(item => item.get('id') !== deleteId)
+  39:             return state.set('cartList', Immutable.fromJS(filterList));
+  40  
+
+  43              const updateId = action.updateId
+  44:             const index = state.get('cartList').findIndex(obj => obj.get('id') === updateId)
+  45:             state = state.setIn(['cartList', index], Immutable.fromJS(updateItem))
+  46              return state
+
+views/cart.js:
+  55      returnProductionList = () => {
+  56:         const productionList = this.props.uvRedux.get('cartList')
+  57          var performList = []
+
+  73      returnTotalPrice = () => {
+  74:         const productionList = this.props.uvRedux.get('cartList')
+  75          let num = 0
+
+views/productions.js:
+  28          const productionList = this.props.uvRedux.get('productionList')
+  29:         let cartList = this.props.uvRedux.get('cartList')
+  30:         const index = state.get('cartList').findIndex(obj => obj.get('id') === id)
+  31          //TODO update quantity of cart item.

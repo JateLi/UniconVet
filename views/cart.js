@@ -53,7 +53,7 @@ class Cart extends React.Component {
     }
 
     returnProductionList = () => {
-        const productionList = this.props.uvRedux.get('cartgoryList')
+        const productionList = this.props.uvRedux.get('cartList')
         var performList = []
 
         if (productionList != []) {
@@ -71,7 +71,7 @@ class Cart extends React.Component {
 
 
     returnTotalPrice = () => {
-        const productionList = this.props.uvRedux.get('cartgoryList')
+        const productionList = this.props.uvRedux.get('cartList')
         let num = 0
         for (let i = 0; i < productionList.size; i++) {
             const price = productionList.getIn([i, 'price'])

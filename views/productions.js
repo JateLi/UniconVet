@@ -26,25 +26,25 @@ class Productions extends React.Component {
     onPressProduction = (id) => {
         console.log(id)
         const productionList = this.props.uvRedux.get('productionList')
-        var cartgoryList = this.props.uvRedux.get('cartgoryList')
-
+        let cartList = this.props.uvRedux.get('cartList')
+        const index = state.get('cartList').findIndex(obj => obj.get('id') === id)
         //TODO update quantity of cart item.
-        // if (cartgoryList != [] && cartgoryList != undefined) {
-        //     console.log(cartgoryList)
-        //     let selectedUpdateItem = cartgoryList.filter(item => item.get('id') == id)
-        //     if (selectedUpdateItem) {
-        //         selectedUpdateItem = selectedUpdateItem.get(0)
-        //         console.log(selectedUpdateItem)
-        //         const updateCartItem = {
-        //             id: selectedUpdateItem.get('id'),
-        //             name: selectedUpdateItem.get('name'),
-        //             quantity: selectedUpdateItem.get('quantity'),
-        //             price: selectedUpdateItem.get('price'),
-        //         }
-        //         this.props.updateCartItem(updateCartItem, id)
-        //         console.log("dsf" + selectedUpdateItem)
-        //     }
-        // }
+        if (cartList != [] && cartList != undefined) {
+            console.log(cartList)
+            let selectedUpdateItem = cartList.filter(item => item.get('id') == id)
+            if (selectedUpdateItem) {
+                selectedUpdateItem = selectedUpdateItem.get(0)
+                console.log(selectedUpdateItem)
+                const updateCartItem = {
+                    id: selectedUpdateItem.get('id'),
+                    name: selectedUpdateItem.get('name'),
+                    quantity: selectedUpdateItem.get('quantity'),
+                    price: selectedUpdateItem.get('price'),
+                }
+                this.props.updateCartItem(updateCartItem, id)
+                console.log("dsf" + selectedUpdateItem)
+            }
+        }
 
         let selectedItem = productionList.filter(item => item.get('id') == id).get(0)
 
