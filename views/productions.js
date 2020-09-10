@@ -1,17 +1,33 @@
 import React from 'react';
 import {
     StyleSheet,
-    SafeAreaView,
-    StatusBar,
     View,
     Text,
-    Dimensions
+    Dimensions,
+    TouchableOpacity
 } from 'react-native';
 
 const { width, height } = Dimensions.get('window');
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 export default class Productions extends React.Component {
+    navToCart = () => {
+        this.props.navigation.navigate('Cart')
+    }
+
+    returnTopBarButton = (buttonText, side) => {
+        if (buttonText == '') return <View />
+
+        const topBarButton = <TouchableOpacity
+            onPress={() => this.navToCart()}>
+            <View style={styles.topBarButton}>
+                <Text>{buttonText}</Text>
+            </View>
+        </TouchableOpacity>
+
+        return topBarButton
+    }
+
     render() {
         return (
             <View style={styles.container}>
@@ -21,8 +37,8 @@ export default class Productions extends React.Component {
                             <Text>{'Production'}</Text>
                         </View>
                     </View>
-                    <Text>Cart</Text>
-                    <Text>Cart</Text>
+                    {this.returnTopBarButton('', 'left')}
+                    {this.returnTopBarButton('Cart', 'right')}
                 </View>
                 <Text>Testestest</Text>
             </View>
@@ -60,4 +76,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center'
     },
+    topBarButton: {
+        alignItems: 'center',
+        justifyContent: 'center'
+    }
 });
