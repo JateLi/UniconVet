@@ -75,8 +75,8 @@ class Cart extends React.Component {
         let num = 0
         for (let i = 0; i < productionList.size; i++) {
             const price = productionList.getIn([i, 'price'])
-
-            num = num + price
+            const quantity = productionList.getIn([i, 'quantity'])
+            num = num + price * quantity
         }
 
         num = num.toFixed(2);
