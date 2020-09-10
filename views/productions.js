@@ -24,28 +24,25 @@ class Productions extends React.Component {
     }
 
     onPressProduction = (id) => {
-        console.log(id)
         const productionList = this.props.uvRedux.get('productionList')
         let cartList = this.props.uvRedux.get('cartList')
         let index = cartList.findIndex(obj => obj.get('id') == id)
-        //TODO update quantity of cart item.
-       
+        
+        //Update quantity of cart item.
         if (cartList != [] && index != -1) {
-            console.log('found it ')
             let selectedUpdateItem = cartList.filter(item => item.get('id') == id)
-            console.log(selectedUpdateItem)
             if (selectedUpdateItem) {
                 selectedUpdateItem = selectedUpdateItem.get(0)
                 let newQuantity = selectedUpdateItem.get('quantity') + 1
-                console.log("??" + newQuantity)
+
                 const updateCartItem = {
                     id: selectedUpdateItem.get('id'),
                     name: selectedUpdateItem.get('name'),
                     quantity: newQuantity,
                     price: selectedUpdateItem.get('price'),
                 }
-                console.log(updateCartItem)
-                this.props.updateCartItem(updateCartItem, id) 
+
+                this.props.updateCartItem(updateCartItem, id)
             }
             return
         }
