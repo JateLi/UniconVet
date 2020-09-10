@@ -10,7 +10,15 @@ import {
 const { width, height } = Dimensions.get('window');
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
-export default class Productions extends React.Component {
+import { updateProductionList } from '../actions/uvActions'
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
+class Productions extends React.Component {
+    componentDidMount() {
+        this.props.updateProductionList()
+    }
+
     navToCart = () => {
         this.props.navigation.navigate('Cart')
     }
@@ -81,3 +89,16 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     }
 });
+
+const mapStateToProps = (state) => {
+    const { uvRedux } = state
+    return { uvRedux }
+};
+
+const mapDispatchToProps = dispatch => (
+    bindActionCreators({
+        updateProductionList
+    }, dispatch)
+);
+
+export default connect(mapStateToProps, mapDispatchToProps)(Productions);
