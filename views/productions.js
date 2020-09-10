@@ -85,8 +85,8 @@ class Productions extends React.Component {
             for (let i = 0; i < productionList.size; i++) {
                 const id = productionList.getIn([i, "id"])
                 const title = productionList.getIn([i, "name"])
-                const price = productionList.getIn([i, 'price'])
-
+                let price = productionList.getIn([i, 'price'])
+                price = price.toFixed(2)
                 performList.push({ title: title, price: price, key: String(id) })
             }
         }
