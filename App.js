@@ -10,10 +10,12 @@ import {
 export default class App extends React.Component {
   render() {
     return (
-      <SafeAreaView style={styles.statusBar} />
-      <View style={styles.container}>
-        <StatusBar barStyle="light-content" />
-        <Text>Testetest</Text>
+      <View>
+        <SafeAreaView style={styles.statusBar} />
+        <View style={styles.container}>
+          <StatusBar barStyle="light-content" />
+          <Text>Testetest</Text>
+        </View>
       </View>
     );
   }
