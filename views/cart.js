@@ -12,7 +12,7 @@ import {
 const { width, height } = Dimensions.get('window');
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
-import { updateProductionList, removeFromCart} from '../actions/uvActions'
+import { updateProductionList, removeFromCart } from '../actions/uvActions'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
@@ -23,9 +23,11 @@ class Cart extends React.Component {
         this.props.updateProductionList()
     }
 
+    /**
+     * Remove the item from cart. 
+     * @param {*} id 
+     */
     onPressProduction = (id) => {
-        //TODO add produciton to cart 
-        console.log(id)
         this.props.removeFromCart(id)
     }
 
@@ -66,15 +68,32 @@ class Cart extends React.Component {
         return performList
     }
 
+
+    returnTotalPrice = () => {
+        const productionList = this.props.uvRedux.get('cartgoryList')
+        let num = 0
+        for (let i = 0; i < productionList.size; i++) {
+            const price = productionList.getIn([i, 'price'])
+
+            num = num + price
+        }
+
+        num = num.toFixed(2);
+
+        return num
+    }
+
     /**
      * Create FlatList with Production List Sample Data. 
      */
     returnFlatList = () => {
         const list = this.returnProductionList()
+        const total = this.returnTotalPrice()
+
         const flatList = <FlatList
             style={styles.flatListHolder}
             data={list}
-            ListHeaderComponent={<View><Text>Header</Text></View>}
+            ListHeaderComponent={<View><Text style={{ fontSize: 20 }}>{"Total: " + total}</Text></View>}
             renderItem={({ item }) =>
                 <CartRow item={item} onPress={this.onPressProduction} />
             } />
