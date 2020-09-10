@@ -19,10 +19,10 @@ export const removeFromCart = (id) => {
     }
   }
 
-  export const updateCartItem = (updatedItem, updateId) => {
+  export const updateCartItem = (updateItem, updateId) => {
     return {
       type: 'UPDATE_SELECT_ITEM',
-      updatedItem, updateId
+      updateItem, updateId
     }
   }
 

@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux';
 import Immutable from 'immutable';
+import { updateCartItem } from '../actions/uvActions';
 
 const INITIAL_STATE =
     Immutable.fromJS(
@@ -41,7 +42,10 @@ const uvReducer = (state = INITIAL_STATE, action) => {
         case 'UPDATE_SELECT_ITEM':
             const updateItem = action.updateItem
             const updateId = action.updateId
-            const index = state.get('cartList').findIndex(obj => obj.get('id') === updateId)
+            console.log(updateId)
+            console.log("dsfsd" + updateItem)
+            const index = state.get('cartList').findIndex(obj => obj.get('id') == updateId)
+            console.log(index)
             state = state.setIn(['cartList', index], Immutable.fromJS(updateItem))
             return state
         default:

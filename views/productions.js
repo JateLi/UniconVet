@@ -27,23 +27,27 @@ class Productions extends React.Component {
         console.log(id)
         const productionList = this.props.uvRedux.get('productionList')
         let cartList = this.props.uvRedux.get('cartList')
-        const index = state.get('cartList').findIndex(obj => obj.get('id') === id)
+        let index = cartList.findIndex(obj => obj.get('id') == id)
         //TODO update quantity of cart item.
-        if (cartList != [] && cartList != undefined) {
-            console.log(cartList)
+       
+        if (cartList != [] && index != -1) {
+            console.log('found it ')
             let selectedUpdateItem = cartList.filter(item => item.get('id') == id)
+            console.log(selectedUpdateItem)
             if (selectedUpdateItem) {
                 selectedUpdateItem = selectedUpdateItem.get(0)
-                console.log(selectedUpdateItem)
+                let newQuantity = selectedUpdateItem.get('quantity') + 1
+                console.log("??" + newQuantity)
                 const updateCartItem = {
                     id: selectedUpdateItem.get('id'),
                     name: selectedUpdateItem.get('name'),
-                    quantity: selectedUpdateItem.get('quantity'),
+                    quantity: newQuantity,
                     price: selectedUpdateItem.get('price'),
                 }
-                this.props.updateCartItem(updateCartItem, id)
-                console.log("dsf" + selectedUpdateItem)
+                console.log(updateCartItem)
+                this.props.updateCartItem(updateCartItem, id) 
             }
+            return
         }
 
         let selectedItem = productionList.filter(item => item.get('id') == id).get(0)
