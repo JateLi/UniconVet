@@ -12,6 +12,13 @@ export const addToCart = (newItem) => {
     }
 }
 
+export const removeFromCart = (id) => {
+    return {
+      type: 'DELETE_ITME_BY_ID',
+      id
+    }
+  }
+
 let products = [
     {
         id: 1,

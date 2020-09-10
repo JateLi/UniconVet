@@ -12,11 +12,11 @@ import {
 const { width, height } = Dimensions.get('window');
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
-import { updateProductionList } from '../actions/uvActions'
+import { updateProductionList, removeFromCart} from '../actions/uvActions'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import ProductionRow from '../components/productionRow'
+import CartRow from '../components/cartRow'
 
 class Cart extends React.Component {
     componentDidMount() {
@@ -26,6 +26,7 @@ class Cart extends React.Component {
     onPressProduction = (id) => {
         //TODO add produciton to cart 
         console.log(id)
+        this.props.removeFromCart(id)
     }
 
     navToCart = (side) => {
@@ -50,7 +51,7 @@ class Cart extends React.Component {
     }
 
     returnProductionList = () => {
-        const productionList = this.props.uvRedux.get('productionList')
+        const productionList = this.props.uvRedux.get('cartgoryList')
         var performList = []
 
         if (productionList != []) {
@@ -73,9 +74,9 @@ class Cart extends React.Component {
         const flatList = <FlatList
             style={styles.flatListHolder}
             data={list}
-            ListHeaderComponent={ <View><Text>Header</Text></View>}
+            ListHeaderComponent={<View><Text>Header</Text></View>}
             renderItem={({ item }) =>
-                <ProductionRow item={item} onPress={this.onPressProduction} />
+                <CartRow item={item} onPress={this.onPressProduction} />
             } />
         return flatList
     }
@@ -146,7 +147,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = dispatch => (
     bindActionCreators({
-        updateProductionList
+        updateProductionList,
+        removeFromCart
     }, dispatch)
 );
 

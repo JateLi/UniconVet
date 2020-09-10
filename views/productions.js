@@ -24,9 +24,15 @@ class Productions extends React.Component {
     }
 
     onPressProduction = (id) => {
-        //TODO add produciton to cart 
         console.log(id)
         const productionList = this.props.uvRedux.get('productionList')
+        const cartgoryList = this.props.uvRedux.get('cartgoryList')
+
+        if (cartgoryList != []) {
+            const index = cartgoryList.findIndex(obj => obj.get('id') == id)
+            console.log(index)
+        }
+
         let selectedItem = productionList.filter(item => item.get('id') == id).get(0)
         this.props.addToCart(selectedItem)
 
