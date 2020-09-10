@@ -34,7 +34,15 @@ class Productions extends React.Component {
         }
 
         let selectedItem = productionList.filter(item => item.get('id') == id).get(0)
-        this.props.addToCart(selectedItem)
+
+        const newCartItem = {
+            id: selectedItem.get('id'),
+            name: selectedItem.get('name'),
+            quantity: 1,
+            price: selectedItem.get('price'),
+        }
+
+        this.props.addToCart(newCartItem)
 
     }
 

@@ -61,8 +61,9 @@ class Cart extends React.Component {
                 const id = productionList.getIn([i, "id"])
                 const title = productionList.getIn([i, "name"])
                 const price = productionList.getIn([i, 'price'])
+                const quantity = productionList.getIn([i, "quantity"])
 
-                performList.push({ title: title, price: price, key: String(id) })
+                performList.push({ title: title, quantity: quantity, price: price, key: String(id) })
             }
         }
         return performList
@@ -110,7 +111,7 @@ class Cart extends React.Component {
                         </View>
                     </View>
                     {this.returnTopBarButton('Back', 'left')}
-                    {this.returnTopBarButton('Cart', 'right')}
+                    {this.returnTopBarButton("", 'right')}
                 </View>
                 {this.returnFlatList()}
             </View>
