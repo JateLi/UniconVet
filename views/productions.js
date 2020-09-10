@@ -12,7 +12,7 @@ import {
 const { width, height } = Dimensions.get('window');
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
-import { updateProductionList } from '../actions/uvActions'
+import { updateProductionList, addToCart } from '../actions/uvActions'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
@@ -26,6 +26,10 @@ class Productions extends React.Component {
     onPressProduction = (id) => {
         //TODO add produciton to cart 
         console.log(id)
+        const productionList = this.props.uvRedux.get('productionList')
+        let selectedItem = productionList.filter(item => item.get('id') == id).get(0)
+        this.props.addToCart(selectedItem)
+
     }
 
     navToCart = () => {
@@ -141,7 +145,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = dispatch => (
     bindActionCreators({
-        updateProductionList
+        updateProductionList,
+        addToCart
     }, dispatch)
 );
 

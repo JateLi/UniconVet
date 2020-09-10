@@ -16,13 +16,17 @@ const INITIAL_STATE =
 
 const uvReducer = (state = INITIAL_STATE, action) => {
     switch (action.type) {
-        //TODO update cart list.
         //TODO Update item in cart by id. 
         //TODO Remove item in cart by id.
         case 'UPDATE_PRODUCTIONS':
             const productions = action.payload
             console.log(productions)
             return state.set('productionList', Immutable.fromJS(productions));
+
+        case 'ADD_NEW_ITEM':
+            const newItem = action.newItem
+            console.log(newItem)
+            return state.update('cartgoryList', cartgoryList => cartgoryList.push(Immutable.fromJS(newItem)));
 
         default:
             return state
