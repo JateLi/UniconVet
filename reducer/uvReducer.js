@@ -23,7 +23,6 @@ const INITIAL_STATE =
 
 const uvReducer = (state = INITIAL_STATE, action) => {
     switch (action.type) {
-        //TODO Remove item in cart by id.
         case 'UPDATE_PRODUCTIONS':
             const productions = action.payload
             console.log(productions)
@@ -40,8 +39,11 @@ const uvReducer = (state = INITIAL_STATE, action) => {
             return state.set('cartgoryList', Immutable.fromJS(filterList));
 
         case 'UPDATE_SELECT_ITEM':
+            const updateItem = action.updateItem
+            const updateId = action.updateId
+            const index = state.get('cartgoryList').findIndex(obj => obj.get('id') === updateId)
+            state = state.setIn(['cartgoryList', index], Immutable.fromJS(updateItem))
             return state
-
         default:
             return state
     }

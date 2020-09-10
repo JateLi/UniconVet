@@ -12,7 +12,7 @@ import {
 const { width, height } = Dimensions.get('window');
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
-import { updateProductionList, addToCart } from '../actions/uvActions'
+import { updateProductionList, addToCart, updateCartItem } from '../actions/uvActions'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
@@ -26,12 +26,25 @@ class Productions extends React.Component {
     onPressProduction = (id) => {
         console.log(id)
         const productionList = this.props.uvRedux.get('productionList')
-        const cartgoryList = this.props.uvRedux.get('cartgoryList')
+        var cartgoryList = this.props.uvRedux.get('cartgoryList')
 
-        if (cartgoryList != []) {
-            const index = cartgoryList.findIndex(obj => obj.get('id') == id)
-            console.log(index)
-        }
+        //TODO update quantity of cart item.
+        // if (cartgoryList != [] && cartgoryList != undefined) {
+        //     console.log(cartgoryList)
+        //     let selectedUpdateItem = cartgoryList.filter(item => item.get('id') == id)
+        //     if (selectedUpdateItem) {
+        //         selectedUpdateItem = selectedUpdateItem.get(0)
+        //         console.log(selectedUpdateItem)
+        //         const updateCartItem = {
+        //             id: selectedUpdateItem.get('id'),
+        //             name: selectedUpdateItem.get('name'),
+        //             quantity: selectedUpdateItem.get('quantity'),
+        //             price: selectedUpdateItem.get('price'),
+        //         }
+        //         this.props.updateCartItem(updateCartItem, id)
+        //         console.log("dsf" + selectedUpdateItem)
+        //     }
+        // }
 
         let selectedItem = productionList.filter(item => item.get('id') == id).get(0)
 
@@ -160,7 +173,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = dispatch => (
     bindActionCreators({
         updateProductionList,
-        addToCart
+        addToCart,
+        updateCartItem
     }, dispatch)
 );
 

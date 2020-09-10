@@ -19,6 +19,13 @@ export const removeFromCart = (id) => {
     }
   }
 
+  export const updateCartItem = (updatedItem, updateId) => {
+    return {
+      type: 'UPDATE_SELECT_ITEM',
+      updatedItem, updateId
+    }
+  }
+
 let products = [
     {
         id: 1,
