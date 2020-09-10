@@ -28,7 +28,11 @@ class Cart extends React.Component {
         console.log(id)
     }
 
-    navToCart = () => {
+    navToCart = (side) => {
+        if (side == 'left') {
+            this.props.navigation.goBack()
+            return
+        }
         this.props.navigation.navigate('Cart')
     }
 
@@ -36,7 +40,7 @@ class Cart extends React.Component {
         if (buttonText == '') return <View />
 
         const topBarButton = <TouchableOpacity
-            onPress={() => this.navToCart()}>
+            onPress={() => this.navToCart(side)}>
             <View style={styles.topBarButton}>
                 <Text>{buttonText}</Text>
             </View>
@@ -69,6 +73,7 @@ class Cart extends React.Component {
         const flatList = <FlatList
             style={styles.flatListHolder}
             data={list}
+            ListHeaderComponent={ <View><Text>Header</Text></View>}
             renderItem={({ item }) =>
                 <ProductionRow item={item} onPress={this.onPressProduction} />
             } />
@@ -81,7 +86,7 @@ class Cart extends React.Component {
                 <View style={styles.topBarHolder}>
                     <View style={styles.titleHolder}>
                         <View style={{ width: wp('90%'), alignItems: 'center' }}>
-                            <Text>{'Production'}</Text>
+                            <Text>{'Cart'}</Text>
                         </View>
                     </View>
                     {this.returnTopBarButton('Back', 'left')}
