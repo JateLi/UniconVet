@@ -53,16 +53,17 @@ class Cart extends React.Component {
     }
 
     returnProductionList = () => {
-        const productionList = this.props.uvRedux.get('cartgoryList')
+        const productionList = this.props.uvRedux.get('cartList')
         var performList = []
 
         if (productionList != []) {
             for (let i = 0; i < productionList.size; i++) {
                 const id = productionList.getIn([i, "id"])
                 const title = productionList.getIn([i, "name"])
-                const price = productionList.getIn([i, 'price'])
+                let price = productionList.getIn([i, 'price'])
                 const quantity = productionList.getIn([i, "quantity"])
-
+                
+                price = price.toFixed(2)
                 performList.push({ title: title, quantity: quantity, price: price, key: String(id) })
             }
         }
@@ -71,12 +72,12 @@ class Cart extends React.Component {
 
 
     returnTotalPrice = () => {
-        const productionList = this.props.uvRedux.get('cartgoryList')
+        const productionList = this.props.uvRedux.get('cartList')
         let num = 0
         for (let i = 0; i < productionList.size; i++) {
             const price = productionList.getIn([i, 'price'])
-
-            num = num + price
+            const quantity = productionList.getIn([i, 'quantity'])
+            num = num + price * quantity
         }
 
         num = num.toFixed(2);

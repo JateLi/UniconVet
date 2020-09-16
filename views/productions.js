@@ -24,27 +24,28 @@ class Productions extends React.Component {
     }
 
     onPressProduction = (id) => {
-        console.log(id)
         const productionList = this.props.uvRedux.get('productionList')
-        var cartgoryList = this.props.uvRedux.get('cartgoryList')
+        let cartList = this.props.uvRedux.get('cartList')
+        let index = cartList.findIndex(obj => obj.get('id') == id)
+        
+        //Update quantity of cart item.
+        if (cartList != [] && index != -1) {
+            let selectedUpdateItem = cartList.filter(item => item.get('id') == id)
+            if (selectedUpdateItem) {
+                selectedUpdateItem = selectedUpdateItem.get(0)
+                let newQuantity = selectedUpdateItem.get('quantity') + 1
 
-        //TODO update quantity of cart item.
-        // if (cartgoryList != [] && cartgoryList != undefined) {
-        //     console.log(cartgoryList)
-        //     let selectedUpdateItem = cartgoryList.filter(item => item.get('id') == id)
-        //     if (selectedUpdateItem) {
-        //         selectedUpdateItem = selectedUpdateItem.get(0)
-        //         console.log(selectedUpdateItem)
-        //         const updateCartItem = {
-        //             id: selectedUpdateItem.get('id'),
-        //             name: selectedUpdateItem.get('name'),
-        //             quantity: selectedUpdateItem.get('quantity'),
-        //             price: selectedUpdateItem.get('price'),
-        //         }
-        //         this.props.updateCartItem(updateCartItem, id)
-        //         console.log("dsf" + selectedUpdateItem)
-        //     }
-        // }
+                const updateCartItem = {
+                    id: selectedUpdateItem.get('id'),
+                    name: selectedUpdateItem.get('name'),
+                    quantity: newQuantity,
+                    price: selectedUpdateItem.get('price'),
+                }
+
+                this.props.updateCartItem(updateCartItem, id)
+            }
+            return
+        }
 
         let selectedItem = productionList.filter(item => item.get('id') == id).get(0)
 
@@ -84,8 +85,8 @@ class Productions extends React.Component {
             for (let i = 0; i < productionList.size; i++) {
                 const id = productionList.getIn([i, "id"])
                 const title = productionList.getIn([i, "name"])
-                const price = productionList.getIn([i, 'price'])
-
+                let price = productionList.getIn([i, 'price'])
+                price = price.toFixed(2)
                 performList.push({ title: title, price: price, key: String(id) })
             }
         }

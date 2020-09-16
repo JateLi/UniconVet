@@ -19,10 +19,10 @@ export const removeFromCart = (id) => {
     }
   }
 
-  export const updateCartItem = (updatedItem, updateId) => {
+  export const updateCartItem = (updateItem, updateId) => {
     return {
       type: 'UPDATE_SELECT_ITEM',
-      updatedItem, updateId
+      updateItem, updateId
     }
   }
 
@@ -71,5 +71,10 @@ let products = [
         id: 9,
         name: 'HacksawBeta',
         price: 19.45
+    },
+    {
+        id: 10,
+        name: 'TestTool',
+        price: 19.4434343
     }
 ]
