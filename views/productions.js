@@ -9,6 +9,8 @@ import {
     PixelRatio
 } from 'react-native';
 
+import { Icon } from 'react-native-elements'
+
 const { width, height } = Dimensions.get('window');
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
@@ -27,7 +29,7 @@ class Productions extends React.Component {
         const productionList = this.props.uvRedux.get('productionList')
         let cartList = this.props.uvRedux.get('cartList')
         let index = cartList.findIndex(obj => obj.get('id') == id)
-        
+
         //Update quantity of cart item.
         if (cartList != [] && index != -1) {
             let selectedUpdateItem = cartList.filter(item => item.get('id') == id)
@@ -70,6 +72,10 @@ class Productions extends React.Component {
         const topBarButton = <TouchableOpacity
             onPress={() => this.navToCart()}>
             <View style={styles.topBarButton}>
+                <Icon
+                    name='shopping-cart'
+                    type='font-awesome'
+                    color='#f50' />
                 <Text>{buttonText}</Text>
             </View>
         </TouchableOpacity>
